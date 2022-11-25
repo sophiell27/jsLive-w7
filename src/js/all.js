@@ -14,8 +14,6 @@ axios.get ("https://raw.githubusercontent.com/hexschool/js-training/main/travelA
 .then(res => {
     data = res.data;
     renderData("全部地區")
-    filterSelect()
-    getFormData()
     renderAreaData("全部地區")
 })
 .catch(function (error) {
@@ -100,7 +98,7 @@ result.innerHTML =str
 // filter logic 
 
 // console.log(searchText)
-function filterSelect(){
+
     filter.addEventListener("change", (e) => {
       resultNum = 0
         renderData(filter.value)
@@ -115,12 +113,9 @@ function filterSelect(){
         }
     })
     
-}
+
 
 // add new data logic
-
-function getFormData(){
-   
     
   addNewForm.addEventListener("submit", (e) => {
     
@@ -156,8 +151,6 @@ function getFormData(){
           }
           
     })
-   
-}
  
 
 // show chart logic
