@@ -25,12 +25,13 @@ const searchText = document.querySelector(".searchText")
 const searchNone = document.querySelector(".searchNone")
 const addNewForm = document.querySelector(".addNewForm")
 const els = document.querySelectorAll("input, textarea,select") //all inputs in an array 
-const areaChart = document.querySelector("#areaChart")
 
 // console.log(els)
 
-// render data 
 let resultNum = 0;
+
+// render data 
+
 function renderData(area){
     let str ="";
 
@@ -81,9 +82,10 @@ function renderData(area){
     str += structure
     resultNum +=1
 
-  }else if (area === item.area){
+  }else if (item.area === area){
     str += structure
     resultNum +=1
+    console.log(str)
   }
     })
 result.innerHTML =str
@@ -96,18 +98,16 @@ result.innerHTML =str
 // console.log(searchText)
 function filterSelect(){
     filter.addEventListener("change", (e) => {
-        resultNum = 0;
+      resultNum = 0
         renderData(filter.value)
         if (resultNum === 0){
             result.innerHTML =""
             searchText.textContent = ""
             searchNone.classList.remove("hidden") 
-            areaChart.classList.add("hidden")
+            renderAreaData(filter.value)
         }else{
             searchNone.classList.add("hidden")
             searchText.textContent = `本次搜尋共 ${resultNum} 筆資料 `
-            areaChart.classList.remove("hidden")
-            renderAreaData(filter.value)
         }
     })
     
@@ -116,12 +116,16 @@ function filterSelect(){
 // add new data logic
 
 function getFormData(){
-    const newObj = {} 
-    let keys = Object.keys(data[1])
-    console.log(keys)
+   
     
   addNewForm.addEventListener("submit", (e) => {
+    
        e.preventDefault();
+
+       const newObj = {} 
+       let keys = Object.keys(data[1])
+      //  console.log(keys)
+
       //  keys + els values in newObj -> push data
 
       //to be push to data 
@@ -129,7 +133,7 @@ function getFormData(){
       els.forEach(item => {
         values[item.id] = item.value
       })
-
+      console.log(values)
         if (values.rate < 0 || values.rate >10 ){
           return
         }else {
@@ -142,9 +146,9 @@ function getFormData(){
              }
             })
             data.push(newObj)
-            renderData("全部地區")
             addNewForm.reset()
-            renderAreaData("全部地區")
+            renderData("全部地區")
+            renderAreaData()
           }
           
     })
@@ -154,42 +158,40 @@ function getFormData(){
 
 // show chart logic
 
-function renderAreaData(area){
+function renderAreaData(){
   
   let areaData = [] //chart data orient
   let newData = data.reduce((obj,item) => {
+    console.log(item)
     if (item.area in obj){
       obj[item.area] +=1
     }else {
       obj[item.area] =1
     }
+    console.log(obj)
     return obj
   }, {})  // console.log(newData ) // {areaA: num, areaB: num /..}
 
-  let keys = Object.keys(newData) 
-  console.log(keys) //[areaA, areaB ...]
-  
-  keys.forEach(item => {
-    let arr =[]
-    if (area === "全部地區"){
-      arr.push(item)
-      arr.push(newData[item])
-      areaData.push(arr)
-    }else if (item ===area){
-      arr.push(item)
-      arr.push(newData[item])
-      areaData.push(arr)
-    }else{
-    }
-  })
-  // console.log(areaData)
+  let newDataKeys = Object.keys(newData) 
 
-  const colors = ["#E68618", "#26C0C7","#5151D3", "pink"]
+  console.log(newDataKeys) //['高雄', '台北', '台中', '台東']
+  
+
+    
+    newDataKeys.forEach(item => {
+      let arr = []
+      arr.push(item)
+      arr.push(newData[item])
+      areaData.push(arr)
+    })
+
+
+    const colors = ["#E68618", "#26C0C7","#5151D3", "pink"]
   // console.log(colors)
-  const charColors = keys.reduce((accu,item,index )=> {
+  const charColors = newDataKeys.reduce((accu,item,index )=> {
     return {...accu, [item]:colors[index]}
   },{})
-  console.log(charColors)
+  // console.log(charColors);
     var areaChart = c3.generate({
       
     bindto: '#areaChart',
@@ -205,8 +207,11 @@ function renderAreaData(area){
       }
   },
   });
+
+  }
+
   
-}
+  
 
 
 
