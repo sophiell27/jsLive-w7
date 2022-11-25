@@ -18,6 +18,10 @@ axios.get ("https://raw.githubusercontent.com/hexschool/js-training/main/travelA
     getFormData()
     renderAreaData("全部地區")
 })
+.catch(function (error) {
+  // handle error
+  console.log(error);
+})
 
 const result = document.querySelector(".result")
 const filter = document.querySelector(".filter")
@@ -85,7 +89,7 @@ function renderData(area){
   }else if (item.area === area){
     str += structure
     resultNum +=1
-    console.log(str)
+    // console.log(str)
   }
     })
 result.innerHTML =str
@@ -133,7 +137,7 @@ function getFormData(){
       els.forEach(item => {
         values[item.id] = item.value
       })
-      console.log(values)
+      
         if (values.rate < 0 || values.rate >10 ){
           return
         }else {
@@ -162,19 +166,19 @@ function renderAreaData(){
   
   let areaData = [] //chart data orient
   let newData = data.reduce((obj,item) => {
-    console.log(item)
+    
     if (item.area in obj){
       obj[item.area] +=1
     }else {
       obj[item.area] =1
     }
-    console.log(obj)
+    
     return obj
   }, {})  // console.log(newData ) // {areaA: num, areaB: num /..}
 
   let newDataKeys = Object.keys(newData) 
 
-  console.log(newDataKeys) //['高雄', '台北', '台中', '台東']
+  // console.log(newDataKeys) //['高雄', '台北', '台中', '台東']
   
 
     
