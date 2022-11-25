@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    *,
+    *:before,
+    *:after{
+        box-sizing: border-box;
+    }
+    html{
+        font-family: 'Noto Sans TC', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", Roboto, Arial, sans-serif;
+        line-height: 1.4;
+        @apply text-primary;
+    }
+    img{
+        vertical-align: middle;
+        max-width: 100%;
+        height: auto;
+    }
+}
+
